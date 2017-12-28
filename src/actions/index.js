@@ -1,10 +1,10 @@
 import { userInfo } from 'os';
 
-export const setPlayer = player => {
-  console.log(player);
+export const setPlayers = players => {
+  console.log(players);
   return {
-    type: 'SET_PLAYER',
-    player
+    type: 'SET_PLAYERS',
+    players
   };
 };
 
@@ -21,3 +21,12 @@ export const setUser = user => {
     user
   };
 };
+
+export const setPicker = id => {
+  return {
+    type: 'SET_PICKER',
+    id
+  };
+};
+
+

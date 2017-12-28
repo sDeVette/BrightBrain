@@ -1,9 +1,13 @@
 const players = (state = {players:[]}, action) => {
   switch (action.type){
-  case 'SET_PLAYER' :
+  case 'SET_PLAYERS' :
+    console.log( { 
+      ...state,
+      players: action.players
+    });
     return { 
       ...state,
-      players: [...state.players, action.player]
+      players: action.players
     };
   case 'CLEAR_PLAYERS' :
     return Object.assign({}, state, {players: []});

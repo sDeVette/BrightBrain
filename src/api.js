@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-const  socket = openSocket('http://192.168.178.19:8000');
+const  socket = openSocket('http://10.40.4.63:8000');
 
 function subscribeToTimer(cb) {
   socket.on('timer', timestamp => cb(null, timestamp));
@@ -23,13 +23,25 @@ function subscribeToChat(cb) {
   });
 }
 
-function userJoined(cb) {
-  socket.on('playerJoined', player => {
-    console.log('PlayerJoined', player);
-    cb(null, player);
+function playersJoined(cb) {
+  socket.on('playersJoined', players => {
+    console.log('PlayerJoined', players);
+    cb(null, players);
+  });
+}
+
+function gameStart(cb) {
+  socket.on('gameStart', (time) => {
+    cb(null, time);
+  });
+}
+
+function pickTeam(cb) {
+  socket.on('pickTeam', (id) => {
+    cb(null, id);
   });
 }
 
 
 
-export { subscribeToTimer, getUser, subscribeToChat, sendMessage, userJoined };
+export { subscribeToTimer, getUser, subscribeToChat, sendMessage, playersJoined, gameStart, pickTeam };

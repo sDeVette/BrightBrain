@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography/Typography';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
@@ -20,7 +21,7 @@ const styles = theme => ({
   
 });
 
-class Players extends Component {
+class PickTeam extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -79,8 +80,8 @@ class Players extends Component {
   
   render(){
     
-    const { classes } = this.props;
-    const { players } = this.state;
+    const { classes, players } = this.props;
+    // const { players } = this.state;
     return(
       <List>  
         {players.map((player, index) => {
@@ -103,5 +104,11 @@ class Players extends Component {
     );
   }
 }
-  
-export default withStyles(styles)(Players);
+const mapStateToProps = (state) => {
+	return {
+		players : state.players.players,
+		user : state.user.user
+	};
+};
+PickTeam = connect(mapStateToProps)(withStyles(styles)(PickTeam));
+export default PickTeam;

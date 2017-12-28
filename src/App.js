@@ -81,7 +81,7 @@ class App extends Component {
                 <MenuIcon/>
               </IconButton>
               <Typography type="title" color="inherit" className={classes.flex}>
-                Brighn {this.state.timestamp}
+                Brighn
               </Typography>
               <Button color="contrast">Login</Button>
             </Toolbar>

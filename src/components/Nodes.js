@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { connect } from "react-redux";
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
 import Typography from 'material-ui/Typography';
 
@@ -24,11 +25,11 @@ const styles = theme => ({
   }
 });
 
-class Inbound extends Component {
+class Nodes extends Component {
   constructor(props){
     super(props);
     this.state = {
-      activeStep: 3,
+      activeStep: 0,
       lastNode: 3,
       players: [
         {
@@ -59,9 +60,9 @@ class Inbound extends Component {
         }
       ],
       nodes: [
-        {id: 1, status: true, players:[1,2]},
-        {id: 2, status: false, players: [2, 3, 4]},
-        {id: 3, status: false, players: [3,5]},
+        {id: 1, status: true, players:[]},
+        {id: 2, status: false, players: []},
+        {id: 3, status: false, players: []},
         {id: 4, status: false, players:[]},
         {id: 5, status: false, players:[]},
       ]
@@ -69,15 +70,14 @@ class Inbound extends Component {
   }
 
   handleStep = step => () => {
-    console.log(step);
     this.setState({
       activeStep: step,
     });
   };
 
   render(){
-    const { classes } = this.props;
-    const { activeStep, lastNode, nodes, players } = this.state;
+    const { classes, players, user, game } = this.props;
+    const { activeStep, lastNode, nodes } = this.state;
     return(
       <div className={classes.root}>
         <Stepper nonLinear activeStep={activeStep} orientation="vertical">
@@ -88,7 +88,7 @@ class Inbound extends Component {
                 <StepButton onClick={this.handleStep(index)}>Node: {node.id}</StepButton>
                 <StepContent>
                   {
-                    activeStep === lastNode && <PickTeam/> ||
+                    user.id === game.pickingPlayer && <PickTeam/> ||
                     node.players.map((id, index) => {
                       console.log(id, lastNode);
                       return(
@@ -111,5 +111,13 @@ class Inbound extends Component {
     );
   }
 }
-  
-export default withStyles(styles)(Inbound);
+
+const mapStateToProps = (state) => {
+	return {
+		players : state.players.players,
+    user : state.user.user,
+    game : state.game,
+	};
+};
+Nodes = connect(mapStateToProps)(withStyles(styles)(Nodes));
+export default Nodes;

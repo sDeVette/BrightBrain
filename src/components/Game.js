@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 import { connect } from "react-redux";
-import { setPlayer, clearPlayers, setUser } from "../actions";
+import { setPlayers, clearPlayers, setUser, setPicker } from "../actions";
 import { ListItem, ListItemIcon, ListItemText, } from 'material-ui/List';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
-import { getUser, userJoined, subscribeToChat, sendMessage } from '../api';
+import { getUser, playersJoined, subscribeToChat, sendMessage, gameStart, pickTeam } from '../api';
 
 import Person from 'material-ui-icons/PersonOutline';
 
@@ -32,18 +32,30 @@ class Game extends Component {
     this.state = {
       value: 0,
     }
-    userJoined((err, player) => {
-      this.props.dispatch(setPlayer(player));
+  }
+  
+  componentWillMount(){
+    playersJoined((err, players) => {
+      this.props.dispatch(setPlayers(players));
       console.log(this.props);
     });
-
+  
     
-
+  
     getUser((err, users) => {
       console.log(users);
-      this.props.dispatch(setPlayer(users));
+      // this.props.dispatch(setPlayers(users));
       this.props.dispatch(setUser(users));
       this.setState({players: users, user:users[users.length - 1]});
+    });
+
+    gameStart((err, time) => {
+      console.log(time);
+    });
+
+    pickTeam((err, id) => {
+      this.setState({value: 1});
+      this.props.dispatch(setPicker(id));
     });
   }
 
@@ -58,14 +70,16 @@ class Game extends Component {
 
 
   render(){
-    const { classes } = this.props;
+    // style={{fill: user.color[600]}}
+    const { classes, user } = this.props;
+    console.log(this.props.user);
     return (
       <div>
         <ListItem dense>
           <ListItemIcon>
-            <Person/>
+            <Person style={{fill: user.color['600']}}/>
           </ListItemIcon>
-          <ListItemText primary='Donna' secondary='Steve de Vette'/>
+          <ListItemText primary={user.name} secondary='Steve de Vette'/>
         </ListItem>
         <Chat/>
         <AppBar position="static" color="default">
@@ -103,7 +117,8 @@ class Game extends Component {
 // </Grid>
 const mapStateToProps = (state) => {
 	return {
-		players : state.players
+		players : state.players,
+		user : state.user.user
 	};
 };
 Game = connect(mapStateToProps)(withStyles(styles)(Game));

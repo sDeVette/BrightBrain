@@ -83,14 +83,14 @@ class Chat extends Component {
   pushMessage = (message, type) => {
     console.log(message);
     console.log(this.props);
-    let body = {text: message, name:this.props.user.user.name};
+    let body = {text: message, id:this.props.user.user.id};
     sendMessage(body);
     this.saveMessage(body, type);
   }
 
   saveMessage = (message, type) => {
     let stateCopy = this.state;
-    stateCopy.messages.push({text:message.text, name: message.name, type: type});
+    stateCopy.messages.push({text:message.text, id: message.id, type: type});
     scroll.scrollToBottom({
       containerId: 'ContainerElementID',
       duration: 150,

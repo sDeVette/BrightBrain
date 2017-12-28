@@ -1,4 +1,4 @@
-const user = (state = {user:{}}, action) => {
+const user = (state = {user:{color:{600:'#FFF'}}}, action) => {
   switch (action.type){
   case 'SET_USER' :
     console.log({ 
