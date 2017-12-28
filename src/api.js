@@ -31,8 +31,8 @@ function playersJoined(cb) {
 }
 
 function gameStart(cb) {
-  socket.on('gameStart', (time) => {
-    cb(null, time);
+  socket.on('gameStart', (game) => {
+    cb(null, game);
   });
 }
 

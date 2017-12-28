@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 import { connect } from "react-redux";
-import { setPlayers, clearPlayers, setUser, setPicker } from "../actions";
+import { setPlayers, clearPlayers, setUser, initGame, setPicker } from "../actions";
 import { ListItem, ListItemIcon, ListItemText, } from 'material-ui/List';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
@@ -49,8 +49,8 @@ class Game extends Component {
       this.setState({players: users, user:users[users.length - 1]});
     });
 
-    gameStart((err, time) => {
-      console.log(time);
+    gameStart((err, game) => {
+      this.props.dispatch(initGame(game));
     });
 
     pickTeam((err, id) => {

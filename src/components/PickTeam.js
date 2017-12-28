@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { withStyles } from 'material-ui/styles';
+import { addPlayerToNode } from "../actions";
 import Typography from 'material-ui/Typography/Typography';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar/Avatar';
@@ -66,9 +67,12 @@ class PickTeam extends Component {
   }
 
   handleToggle = (id) => (event) => {
-    if(this.state.checked < this.state.teamSizeForRound || event.target.checked === false){
+    let {game, players} = this.props;
+    console.log(game);
+    if(this.state.checked < game.nodes[game.currentNode].size || event.target.checked === false){
       let stateCopy = this.state;
-      stateCopy.players[id - 1].selected = event.target.checked;
+      this.props.dispatch(addPlayerToNode(id));
+      // stateCopy.players[id - 1].selected = event.target.checked;
       if(event.target.checked === false){
         stateCopy.checked--;
       } else {
@@ -107,7 +111,8 @@ class PickTeam extends Component {
 const mapStateToProps = (state) => {
 	return {
 		players : state.players.players,
-		user : state.user.user
+    user : state.user.user,
+    game : state.game,
 	};
 };
 PickTeam = connect(mapStateToProps)(withStyles(styles)(PickTeam));

@@ -22,6 +22,19 @@ export const setUser = user => {
   };
 };
 
+export const initGame = game => {
+  return {
+    type: 'INIT_GAME',
+    game
+  };
+};
+
+export const addPlayerToNode = id => {
+  return {
+    type: 'ADD_PLAYER_TO_NODE',
+    id
+  };
+};
 export const setPicker = id => {
   return {
     type: 'SET_PICKER',

@@ -89,7 +89,7 @@ class Nodes extends Component {
                 <StepContent>
                   {
                     user.id === game.pickingPlayer && <PickTeam/> ||
-                    node.players.map((id, index) => {
+                    game.nodes[game.currentNode].players.map((id, index) => {
                       console.log(id, lastNode);
                       return(
                         <ListItem key={index}>
