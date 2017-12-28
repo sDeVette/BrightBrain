@@ -29,36 +29,52 @@ class Players extends Component {
           id: 1,
           name: 'Angie',
           color: red,
-          selected: 0,
+          selected: false,
         },{
           id: 2,
           name: 'Brian',
           color: blue,
-          selected: 0,
+          selected: false,
         },{
           id: 3,
           name: 'Carl',
           color: yellow,
-          selected: 0,
+          selected: false,
         },{
           id: 4,
           name: 'Donna',
           color: purple,
-          selected: 0,
+          selected: false,
         },{
           id: 5,
           name: 'Eric',
           color: green,
-          selected: 0,
+          selected: false,
         }
       ],
+      checked: 0,
+      teamSizeForRound: 3,
     };
   }
 
-  handleToggle = (value, id) => () => {
-      console.log(value, id);
-    let stateCopy = this.state;
-    stateCopy.players[id - 1].selected = value;
+  countChecked = () => {
+    let count = 0;
+    this.state.players.map((player, index) => {
+      
+    })
+  }
+
+  handleToggle = (id) => (event) => {
+    if(this.state.checked < this.state.teamSizeForRound || event.target.checked === false){
+      let stateCopy = this.state;
+      stateCopy.players[id - 1].selected = event.target.checked;
+      if(event.target.checked === false){
+        stateCopy.checked--;
+      } else {
+        stateCopy.checked++;
+      }
+      this.setState(stateCopy);
+    }
   }
   
   render(){

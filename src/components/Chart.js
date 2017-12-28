@@ -20,7 +20,8 @@ import purple from 'material-ui/colors/purple';
 
 const styles = theme => ({
   root: {
-    
+    height: 'calc(100vh - 383px)',
+    overflowY: 'scroll',
   },
   player1: {
     fill: blue[500],

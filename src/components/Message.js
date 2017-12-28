@@ -11,10 +11,11 @@ const styles = theme => ({
 class Inbound extends Component {
   render(){
     const { classes, message } = this.props;
+    console.log(message);
     return(
       <div className={classes.root}>
         <Typography color="secondary">
-          {message.text}
+          {message.name} {message.text}
         </Typography>
       </div>
     );

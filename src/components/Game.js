@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { connect } from "react-redux";
+import { setPlayer, clearPlayers, setUser } from "../actions";
 import { ListItem, ListItemIcon, ListItemText, } from 'material-ui/List';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
+
+import { getUser, userJoined, subscribeToChat, sendMessage } from '../api';
 
 import Person from 'material-ui-icons/PersonOutline';
 
@@ -28,6 +32,19 @@ class Game extends Component {
     this.state = {
       value: 0,
     }
+    userJoined((err, player) => {
+      this.props.dispatch(setPlayer(player));
+      console.log(this.props);
+    });
+
+    
+
+    getUser((err, users) => {
+      console.log(users);
+      this.props.dispatch(setPlayer(users));
+      this.props.dispatch(setUser(users));
+      this.setState({players: users, user:users[users.length - 1]});
+    });
   }
 
   handleChange = (event, value) => {
@@ -84,5 +101,10 @@ class Game extends Component {
 //   Paper can be used to build surface or other elements for your application.
 //   </Typography>
 // </Grid>
-
-export default withStyles(styles)(Game);
+const mapStateToProps = (state) => {
+	return {
+		players : state.players
+	};
+};
+Game = connect(mapStateToProps)(withStyles(styles)(Game));
+export default Game;

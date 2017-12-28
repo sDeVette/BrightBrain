@@ -14,6 +14,10 @@ import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography/Typography';
 import Button from 'material-ui/Button/Button';
 
+
+import { subscribeToTimer } from './api';
+
+
 const theme = createMuiTheme({
   palette: {
     primary: purple,
@@ -53,6 +57,19 @@ const styles = {
 };
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      timestamp: 'no timestamp yet'
+    };
+
+    
+
+    // subscribeToTimer((err, timestamp) => this.setState({ 
+    //   timestamp 
+    // }));
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -64,7 +81,7 @@ class App extends Component {
                 <MenuIcon/>
               </IconButton>
               <Typography type="title" color="inherit" className={classes.flex}>
-                Brighn
+                Brighn {this.state.timestamp}
               </Typography>
               <Button color="contrast">Login</Button>
             </Toolbar>

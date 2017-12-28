@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { connect } from "react-redux";
 import Typography from 'material-ui/Typography';
 
 import Person from 'material-ui-icons/PersonOutline';
@@ -8,6 +9,8 @@ import Chip from 'material-ui/Chip/Chip';
 import Avatar from 'material-ui/Avatar/Avatar';
 
 import { Link, DirectLink, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+
+import { getUser, subscribeToChat, sendMessage } from '../api';
 
 import grey from 'material-ui/colors/grey';
 
@@ -49,19 +52,20 @@ const styles = theme => ({
 
 
 
-class Game extends Component {
+class Chat extends Component {
   constructor(props){
     super(props);
     this.state = {
       draft: '',
       messages:[
-        {text: 'I think Donna is the hacker', type: 'inbound'},
-        {text: 'I never trust redheads', type: 'inbound'},
-        {text: 'Me neither!', type: 'inbound'},
-        {text: 'Based on what!?', type: 'outbound'},
       ]
     };
+    subscribeToChat((err, message) => {
+      this.saveMessage(message, 'inbound');
+    });
   }
+
+  
 
   handleChange = (event) => {
     this.setState({draft: event.target.value});
@@ -73,14 +77,27 @@ class Game extends Component {
 
   postMessage = (e) => {
     e.preventDefault();
+    this.pushMessage(this.state.draft, 'outbound');
+  }
+
+  pushMessage = (message, type) => {
+    console.log(message);
+    console.log(this.props);
+    let body = {text: message, name:this.props.user.user.name};
+    sendMessage(body);
+    this.saveMessage(body, type);
+  }
+
+  saveMessage = (message, type) => {
     let stateCopy = this.state;
-    stateCopy.messages.push({text:this.state.draft, type:'outbound'});
+    stateCopy.messages.push({text:message.text, name: message.name, type: type});
     scroll.scrollToBottom({
       containerId: 'ContainerElementID',
       duration: 150,
     });
     this.setState(stateCopy,() => {
       this.setState({draft:''});
+      
     });
   }
 
@@ -101,7 +118,6 @@ class Game extends Component {
       <div className={classes.root}>
         <div className={classes.messages} id="ContainerElementID">
           {messages.map((message, index) => {
-            console.log(message);
             if(message.type === 'inbound'){
               return(
                 <Slide in={true} direction="left" key={index}>
@@ -136,5 +152,11 @@ class Game extends Component {
   }
 }
 
-
-export default withStyles(styles)(Game);
+const mapStateToProps = (state) => {
+  return {
+    players : state.players.players,
+    user : state.user
+  };
+};
+Chat = connect(mapStateToProps)(withStyles(styles)(Chat));
+export default Chat;
